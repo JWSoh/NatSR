@@ -6,13 +6,13 @@ from argparse import ArgumentParser
 
 parser=ArgumentParser()
 parser.add_argument('--gpu', type=str, dest='gpu', default='0', help='The index of GPU which is going to be used')
-parser.add_argument('--ref', type=bool, dest='ref', default=True, choices=[True, False], help='True if there exist reference images')
+parser.add_argument('--ref', type=int, dest='ref', default=1, choices=[0,1], help='1: if there exist reference images, 0: No reference images.')
 parser.add_argument('--datapath', type=str, dest='datapath', help='Input image data path')
 parser.add_argument('--labelpath', type=str, dest='labelpath', default=None, help='Ground truth image data path if available')
 parser.add_argument('--modelpath', type=str, dest='modelpath', default='Model', help='Model path')
 parser.add_argument('--model', type=str, dest='model',choices=['NatSR', 'FRSR'], default='NatSR', help='Model type: NatSR or FRSR ?')
 parser.add_argument('--savepath', type=str, dest='savepath', default='result', help='savepath')
-parser.add_argument('--save', type=bool, dest='save', default=True, help='True to save output images')
+parser.add_argument('--save', type=int, dest='save', choices=[0,1], default=1, help='1: to save output images')
 options=parser.parse_args()
 
 conf = tf.ConfigProto()
@@ -28,7 +28,7 @@ ext='png'
 datapath=options.datapath
 img_list=np.sort(np.asarray(glob.glob('%s/*.%s' % (datapath, ext))))
 
-if options.ref is True:
+if options.ref == 1:
     labelpath=options.labelpath
     label_list = np.sort(np.asarray(glob.glob('%s/*.%s' % (labelpath, ext))))
     P=[]
@@ -61,7 +61,7 @@ with tf.Session(config=conf) as sess:
         img=image[None, :,:, :]
         out=sess.run(output, feed_dict={input_img: img})
 
-        if options.ref is True:
+        if options.ref == 1:
             label = imread(label_list[n])
             label = modcrop(label, scale)
 

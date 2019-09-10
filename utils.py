@@ -1,3 +1,5 @@
+import os
+import tensorflow as tf
 import scipy.misc
 import numpy as np
 import math
@@ -6,6 +8,31 @@ def imread(path):
     img = scipy.misc.imread(path).astype(np.float32)
     img=img/255.
     return img
+
+def load(saver, sess, checkpoint_dir, folder):
+    print(" ========== Reading Checkpoints ============")
+    checkpoint=os.path.join(checkpoint_dir, folder)
+
+    ckpt = tf.train.get_checkpoint_state(checkpoint)
+
+    if ckpt and ckpt.model_checkpoint_path:
+        ckpt_name = os.path.basename(ckpt.model_checkpoint_path)
+        saver.restore(sess, os.path.join(checkpoint, ckpt_name))
+
+        print(" ============== Success to read {} ===============".format(ckpt_name))
+        return True
+    else:
+        print(" ============= Failed to find a checkpoint =============")
+        return False
+
+def save(saver, sess, checkpoint_dir, trial, step):
+    model_name="model"
+    checkpoint=os.path.join(checkpoint_dir, "Model%d" % trial)
+
+    if not os.path.exists(checkpoint):
+        os.makedirs(checkpoint)
+
+    saver.save(sess,os.path.join(checkpoint,model_name),global_step=step)
 
 def psnr(img1, img2):
     img1=np.float64(img1)
