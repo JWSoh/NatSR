@@ -83,7 +83,7 @@ Left: The overall training scheme & Right: The SR network (Generator) architectu
 ```
 -- generate_Dataset: To generate training datasets (TFRecord)
 -- Model: Pre-trained models are included.
-emsp; -> FRSR x2, FRSR x3, FRSR (x4), NatSR, NMD
+    -> FRSR x2, FRSR x3, FRSR (x4), NatSR, NMD
 -- Train_NMD: Training codes for Train NMD.
 
 Rest of the files are for the training and the test of NatSR.
