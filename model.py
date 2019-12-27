@@ -133,7 +133,7 @@ class Discriminator(object):
             self.conv5_1 = SNconv(self.conv4_2, 1024, [3, 3], scope='conv5_1', activation='leakyReLU')
             self.conv5_2 = SNconv(self.conv5_1, 1024, [3, 3], strides=2, scope='conv5_2', activation='leakyReLU')
 
-            self.conv6_1 = SNconv(self.conv4_2, 1, [3, 3], scope='conv6_1', activation=None)
+            self.conv6_1 = SNconv(self.conv5_2, 1, [3, 3], scope='conv6_1', activation=None)
 
             self.logit = tf.reduce_mean(self.conv6_1, axis=(1,2))
             self.out = tf.nn.sigmoid(self.logit)
