@@ -176,7 +176,7 @@ python test.py --gpu 0 --ref 0 --datapath LR/Set5 --model FRSR
 
 ### Important Codes for Training
 
-The below code is how I injected DCT noise to the image.
+The code below is how I injected DCT noise to the image.
 
 ```
 def inject_dct(x, sigma):
