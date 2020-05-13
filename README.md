@@ -143,16 +143,16 @@ Ready for input data (low-resolution).
 
 [Options]
 ```
-python test.py --gpu [GPU_number] --ref [True/False] --datapath [LR path] --labelpath [HR path] --modelpath [pretrained model path] --model [NatSR/FRSR] --savepath [SR path] --save [True/False]
+python test.py --gpu [GPU_number] --ref [1/0] --datapath [LR path] --labelpath [HR path] --modelpath [pretrained model path] --model [model type] --savepath [SR path] --save
 
 --gpu: If you have more than one gpu in your computer, the number designates the index of GPU which is going to be used. [Default 0]
 --ref: [1/0] 1 if there exist reference images. (Reference images are just for PSNR measurements.) [Default 1]
 --datapath: Path of input images.
 --labelpath: Path of reference images. (Not required, only for PSNR.)
 --modelpath: Path of pretrained models. (If you clone this repo., you don't need to specify.
---model: [NatSR/FRSR] The type of model. [Default: NatSR]
+--model: [NatSR/FRSR/FRSR_x2/FRSR_x3] The type of model. [Default: NatSR]
 --savepath: Path for super-resolved images. [Default: result]
---save: [1/0] Flag whether to save SR images. [Default 1]
+--save: To save SR images. [Default: False]
 
 ```
 
@@ -160,23 +160,23 @@ python test.py --gpu [GPU_number] --ref [True/False] --datapath [LR path] --labe
 
 To generate super-resolved image and also to measure PSNR.
 ```
-python test.py --gpu 0 --datapath LR/Set5 --labelpath HR/Set5 --model NatSR
+python test.py --gpu 0 --datapath LR/Set5 --labelpath HR/Set5 --model NatSR --save
 ```
 To generate output images, only.
 
 ```
-python test.py --gpu 0 --ref 0 --datapath LR/Set5 --model NatSR
+python test.py --gpu 0 --ref 0 --datapath LR/Set5 --model NatSR --save
 ```
 
 Super-resolve with FRSR (Distortion oriented model)
 
 ```
-python test.py --gpu 0 --ref 0 --datapath LR/Set5 --model FRSR
+python test.py --gpu 0 --ref 0 --datapath LR/Set5 --model FRSR --save
 ```
 
 ### Important Codes for Training
 
-The code below is how I injected DCT noise to the image.
+The below code is how I injected DCT noise to the image.
 
 ```
 def inject_dct(x, sigma):

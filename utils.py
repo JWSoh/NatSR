@@ -1,11 +1,11 @@
 import os
 import tensorflow as tf
-import scipy.misc
+import imageio
 import numpy as np
 import math
 
 def imread(path):
-    img = scipy.misc.imread(path).astype(np.float32)
+    img = imageio.imread(path).astype(np.float32)
     img=img/255.
     return img
 

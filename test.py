@@ -10,9 +10,9 @@ parser.add_argument('--ref', type=int, dest='ref', default=1, choices=[0,1], hel
 parser.add_argument('--datapath', type=str, dest='datapath', help='Input image data path')
 parser.add_argument('--labelpath', type=str, dest='labelpath', default=None, help='Ground truth image data path if available')
 parser.add_argument('--modelpath', type=str, dest='modelpath', default='Model', help='Model path')
-parser.add_argument('--model', type=str, dest='model',choices=['NatSR', 'FRSR'], default='NatSR', help='Model type: NatSR or FRSR ?')
+parser.add_argument('--model', type=str, dest='model',choices=['NatSR', 'FRSR', 'FRSR_x2', 'FRSR_x3'], default='NatSR', help='Model type: NatSR or FRSR ?')
 parser.add_argument('--savepath', type=str, dest='savepath', default='result', help='savepath')
-parser.add_argument('--save', type=int, dest='save', choices=[0,1], default=1, help='1: to save output images')
+parser.add_argument('--save', dest='save', default=False, action='store_true', help='To save output images')
 options=parser.parse_args()
 
 conf = tf.ConfigProto()
@@ -83,7 +83,7 @@ with tf.Session(config=conf) as sess:
                 os.makedirs('%s/%s' % (savepath, model))
 
             saveImg=np.uint8(np.round(np.clip(out[0]*255,0.,255.)))
-            scipy.misc.imsave(os.path.join(savepath, model, os.path.basename(img_list[n][:-4]+'.png')), saveImg)
+            imageio.imsave(os.path.join(savepath, model, os.path.basename(img_list[n][:-4]+'.png')), saveImg)
 
 if options.ref is True:
     print('Y-PSNR: %.2f' % np.mean(P))
